@@ -169,6 +169,8 @@ jobs:
 
       - name: Post daily report to issue
         id: post_report
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           # Check if daily report file exists
           if [ -f "daily_report.md" ]; then
