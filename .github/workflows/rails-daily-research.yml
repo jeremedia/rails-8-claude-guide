@@ -55,8 +55,6 @@ jobs:
           prompt: |
             You are maintaining the Rails 8 knowledge base repository. Perform the following daily research tasks:
 
-            CRITICAL: You MUST post a comment to GitHub issue #2 for EVERY run, regardless of findings.
-
             1. Check these primary sources for Rails news:
                - Rails Blog (https://rubyonrails.org/blog)
                - Rails GitHub Releases (https://github.com/rails/rails/releases)
@@ -74,7 +72,7 @@ jobs:
                - Updates to the Solid trilogy (Queue/Cache/Cable)
                - Active Storage or Turbo/Stimulus updates
 
-            3. ALWAYS post a comment to GitHub issue #2 using this EXACT format:
+            3. CRITICAL: Create a file named "daily_report.md" in the repository root with your findings using this EXACT format:
                
                ## 📅 Rails Daily Research Report - ${{ steps.metadata.outputs.date }}
                
@@ -83,6 +81,7 @@ jobs:
                - **Run Number**: #${{ github.run_number }}
                - **Triggered**: ${{ steps.metadata.outputs.trigger }} at ${{ steps.metadata.outputs.start_time }}
                - **Workflow**: [View Run](${{ steps.metadata.outputs.run_url }})
+               - **Status**: ✅ Automated research completed
                - **Next Scheduled Run**: Tomorrow at 09:00 UTC
                
                ### 🔍 Sources Checked
@@ -116,10 +115,10 @@ jobs:
                - Documentation updates: [number of files changed or "None"]
                - Research duration: ~2-3 minutes
                
-               ### 🔄 Status
+               ### 🔄 Repository Status
                - Research: ✅ Complete
                - Documentation: [✅ Updated / ✅ No updates needed]
-               - Next run: Scheduled for tomorrow
+               - Report: Generated at ${{ steps.metadata.outputs.start_time }}
                
                ---
                *Automated by [Rails Daily Research Workflow](https://github.com/${{ github.repository }}/blob/main/.github/workflows/rails-daily-research.yml)*
@@ -128,14 +127,14 @@ jobs:
                - Update the relevant .md files in the repository
                - Create new documentation files if needed for major features
                - Update the README.md with any critical information
-               - List the files changed in your comment
+               - List the files changed in your report
 
-            5. After making any documentation updates:
-               - Stage all changes with git add
-               - Create a descriptive commit message
-               - Changes will be automatically pushed by the workflow
+            5. After creating the daily_report.md file:
+               - Ensure it's saved in the repository root
+               - Do NOT post to GitHub issues directly
+               - The workflow will handle posting the report
 
-            REMEMBER: You MUST post a comment to issue #2 even if no updates are found. This provides accountability that the automation is working correctly.
+            IMPORTANT: You MUST create the daily_report.md file even if no updates are found. This file will be posted to issue #2 by the workflow.
           claude_args: |
             --max-turns 15
             --model claude-sonnet-4-20250514
@@ -168,55 +167,59 @@ jobs:
         run: |
           git push origin main || echo "Failed to push changes"
 
-      - name: Verify comment posted
-        id: verify_comment
+      - name: Post daily report to issue
+        id: post_report
         run: |
-          # Check if a comment was posted in the last 5 minutes
-          RECENT_COMMENT=$(gh api repos/${{ github.repository }}/issues/2/comments \
-            --jq ".[] | select(.created_at > \"$(date -u -d '5 minutes ago' '+%Y-%m-%dT%H:%M:%SZ')\") | .created_at" \
-            | head -1)
-          
-          if [ -n "$RECENT_COMMENT" ]; then
-            echo "comment_posted=true" >> $GITHUB_OUTPUT
-            echo "✅ Comment posted to issue #2"
+          # Check if daily report file exists
+          if [ -f "daily_report.md" ]; then
+            echo "✅ Daily report file found"
+            
+            # Post the report content to issue #2
+            REPORT_CONTENT=$(cat daily_report.md)
+            
+            # Use GitHub CLI to create comment
+            gh issue comment 2 --body "$REPORT_CONTENT"
+            
+            echo "✅ Report posted to issue #2"
+            echo "report_posted=true" >> $GITHUB_OUTPUT
+            
+            # Remove the report file to keep repo clean
+            rm daily_report.md
+            echo "🧹 Cleaned up daily_report.md"
           else
-            echo "comment_posted=false" >> $GITHUB_OUTPUT
-            echo "⚠️ No recent comment found on issue #2"
+            echo "⚠️ No daily report file found"
+            echo "report_posted=false" >> $GITHUB_OUTPUT
+            
+            # Create a minimal report if Claude didn't create one
+            cat > fallback_report.md << EOF
+          ## 📅 Rails Daily Research Report - ${{ steps.metadata.outputs.date }}
+          
+          ### 🤖 Automation Metadata
+          - **Run ID**: ${{ github.run_id }}
+          - **Run Number**: #${{ github.run_number }}
+          - **Triggered**: ${{ steps.metadata.outputs.trigger }} at ${{ steps.metadata.outputs.start_time }}
+          - **Workflow**: [View Run](${{ steps.metadata.outputs.run_url }})
+          
+          ### ⚠️ Report Generation Issue
+          
+          The automated research completed but no report file was generated.
+          This typically means Claude encountered an issue during research.
+          
+          Please check the [workflow logs](${{ steps.metadata.outputs.run_url }}) for details.
+          
+          ### 🔄 Status
+          - Research: ⚠️ Completed with issues
+          - Next run: Scheduled for tomorrow at 09:00 UTC
+          
+          ---
+          *Automated fallback from [Rails Daily Research Workflow](https://github.com/${{ github.repository }}/blob/main/.github/workflows/rails-daily-research.yml)*
+          EOF
+            
+            # Post the fallback report
+            gh issue comment 2 --body-file fallback_report.md
+            echo "⚠️ Posted fallback report to issue #2"
+            rm fallback_report.md
           fi
-
-      - name: Fallback comment if needed
-        if: steps.verify_comment.outputs.comment_posted == 'false'
-        uses: actions/github-script@v7
-        with:
-          script: |
-            await github.rest.issues.createComment({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              issue_number: 2,
-              body: `## 📅 Rails Daily Research Report - ${new Date().toISOString().split('T')[0]}
-              
-              ### 🤖 Automation Metadata
-              - **Run ID**: ${context.runId}
-              - **Run Number**: #${context.runNumber}
-              - **Triggered**: ${{ steps.metadata.outputs.trigger }} at ${{ steps.metadata.outputs.start_time }}
-              - **Workflow**: [View Run](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})
-              
-              ### ⚠️ Automated Report
-              
-              The Rails research automation completed but did not post findings automatically.
-              This could mean:
-              - No new Rails updates were found
-              - Claude encountered an issue posting the comment
-              
-              Please check the [workflow logs](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}) for details.
-              
-              ### 🔄 Status
-              - Research: ✅ Workflow completed
-              - Next run: Scheduled for tomorrow at 09:00 UTC
-              
-              ---
-              *Fallback message from [Rails Daily Research Workflow](https://github.com/${context.repo.owner}/${context.repo.repo}/blob/main/.github/workflows/rails-daily-research.yml)*`
-            })
 
       - name: Summary
         run: |
@@ -233,7 +236,7 @@ jobs:
           echo "- **Date**: ${{ steps.metadata.outputs.date }}" >> $GITHUB_STEP_SUMMARY
           echo "- **Duration**: ${DURATION_MINUTES}m ${DURATION_REMAINING}s" >> $GITHUB_STEP_SUMMARY
           echo "- **Status**: ✅ Research completed" >> $GITHUB_STEP_SUMMARY
-          echo "- **Comment Posted**: $([[ "${{ steps.verify_comment.outputs.comment_posted }}" == "true" ]] && echo "✅ Yes" || echo "⚠️ Fallback used")" >> $GITHUB_STEP_SUMMARY
+          echo "- **Report Posted**: $([[ "${{ steps.post_report.outputs.report_posted }}" == "true" ]] && echo "✅ Yes" || echo "⚠️ Fallback used")" >> $GITHUB_STEP_SUMMARY
           echo "- **Changes**: $([[ "${{ steps.check_changes.outputs.changes }}" == "true" ]] && echo "📝 Documentation updated" || echo "No updates needed")" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "View detailed findings in [Issue #2](https://github.com/${{ github.repository }}/issues/2)" >> $GITHUB_STEP_SUMMARY
