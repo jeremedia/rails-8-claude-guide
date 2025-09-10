@@ -1,19 +1,23 @@
 # Rails 8 Study Guide for Claude Code Sessions
 
-*Last Updated: January 2025*  
-*Based on Rails 8.0 (Released November 7, 2024)*
+*Last Updated: September 2025*  
+*Rails 8.0: Released November 7, 2024*  
+*Rails 8.1 Beta 1: Released September 4, 2025*
 
 This concise guide provides essential Rails 8 knowledge for Claude Code sessions, focusing on verified changes from official documentation and production usage.
 
+> **🆕 Rails 8.1 Beta Available**: Job Continuations, Structured Events, and Local CI are now in beta. See [Rails 8.1 Beta Features](rails_8_1_beta.md) for implementation details.
+
 ## Table of Contents
 1. [Rails 8 Core Changes](#rails-8-core-changes)
-2. [Active Storage Critical Points](#active-storage-critical-points)
-3. [The Solid Trilogy](#the-solid-trilogy)
-4. [Propshaft Asset Pipeline](#propshaft-asset-pipeline)
-5. [Turbo 8 & Morphing](#turbo-8--morphing)
-6. [Deployment Stack](#deployment-stack)
-7. [Performance](#performance)
-8. [Common Pitfalls](#common-pitfalls)
+2. [Rails 8.1 Beta Features](rails_8_1_beta.md)
+3. [Active Storage Critical Points](#active-storage-critical-points)
+4. [The Solid Trilogy](#the-solid-trilogy)
+5. [Propshaft Asset Pipeline](#propshaft-asset-pipeline)
+6. [Turbo 8 & Morphing](#turbo-8--morphing)
+7. [Deployment Stack](#deployment-stack)
+8. [Performance](#performance)
+9. [Common Pitfalls](#common-pitfalls)
 
 ## Rails 8 Core Changes
 
@@ -206,6 +210,27 @@ bin/rails generate authentication
 # Run with Thruster
 bin/thrust bin/rails server
 ```
+
+## Rails 8.1 Beta Highlights
+
+**Released September 4, 2025** - Three game-changing features:
+
+### Job Continuations
+- Break long-running jobs into resumable steps
+- Survive deployments and restarts
+- Perfect for Kamal's 30-second shutdown window
+
+### Structured Events
+- Machine-readable logging with `Rails.event`
+- Tagged context and structured data
+- Built for modern observability tools
+
+### Local CI
+- Run CI locally with `bin/ci`
+- Defined in `config/ci.rb`
+- Optional GitHub integration
+
+See [Rails 8.1 Beta Features Guide](rails_8_1_beta.md) for complete documentation.
 
 ## Essential Resources
 
