@@ -1,0 +1,21 @@
+[Unit]
+Description=Daily Rails Research Timer
+Documentation=https://github.com/jeremedia/rails-8-claude-guide
+Requires=rails-research.service
+
+[Timer]
+# Run daily at 9:00 AM
+OnCalendar=daily
+OnCalendar=09:00:00
+
+# Run immediately if system was powered down
+Persistent=true
+
+# Randomize start time by up to 10 minutes to avoid load spikes
+RandomizedDelaySec=600
+
+# Run on boot if missed
+OnBootSec=10min
+
+[Install]
+WantedBy=timers.target

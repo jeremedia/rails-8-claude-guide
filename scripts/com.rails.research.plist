@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>com.rails.research</string>
+    
+    <key>ProgramArguments</key>
+    <array>
+        <string>/Users/jeremy/Desktop/rails-8-claude-guide/scripts/rails_daily_research.sh</string>
+    </array>
+    
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>PATH</key>
+        <string>/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/opt/homebrew/bin</string>
+        <key>RAILS_GUIDE_REPO</key>
+        <string>/Users/jeremy/Desktop/rails-8-claude-guide</string>
+    </dict>
+    
+    <key>WorkingDirectory</key>
+    <string>/Users/jeremy/Desktop/rails-8-claude-guide</string>
+    
+    <key>StandardOutPath</key>
+    <string>/Users/jeremy/Desktop/rails-8-claude-guide/logs/launchd_stdout.log</string>
+    
+    <key>StandardErrorPath</key>
+    <string>/Users/jeremy/Desktop/rails-8-claude-guide/logs/launchd_stderr.log</string>
+    
+    <key>StartCalendarInterval</key>
+    <dict>
+        <key>Hour</key>
+        <integer>9</integer>
+        <key>Minute</key>
+        <integer>0</integer>
+    </dict>
+    
+    <key>RunAtLoad</key>
+    <false/>
+    
+    <key>KeepAlive</key>
+    <false/>
+    
+    <key>ThrottleInterval</key>
+    <integer>3600</integer>
+</dict>
+</plist>
