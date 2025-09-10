@@ -39,6 +39,14 @@ jobs:
         run: |
           git pull origin main || echo "No remote changes to pull"
 
+      - name: Set run metadata
+        id: metadata
+        run: |
+          echo "start_time=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> $GITHUB_OUTPUT
+          echo "date=$(date -u +%Y-%m-%d)" >> $GITHUB_OUTPUT
+          echo "trigger=${{ github.event_name }}" >> $GITHUB_OUTPUT
+          echo "run_url=https://github.com/${{ github.repository }}/actions/runs/${{ github.run_id }}" >> $GITHUB_OUTPUT
+
       - name: Run Rails Research with Claude
         uses: anthropics/claude-code-action@v1
         with:
@@ -46,6 +54,8 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           prompt: |
             You are maintaining the Rails 8 knowledge base repository. Perform the following daily research tasks:
+
+            CRITICAL: You MUST post a comment to GitHub issue #2 for EVERY run, regardless of findings.
 
             1. Check these primary sources for Rails news:
                - Rails Blog (https://rubyonrails.org/blog)
@@ -64,38 +74,68 @@ jobs:
                - Updates to the Solid trilogy (Queue/Cache/Cable)
                - Active Storage or Turbo/Stimulus updates
 
-            3. Add a detailed comment to GitHub issue #2 with your findings using this format:
-               ## Rails Update Research - [Today's Date]
+            3. ALWAYS post a comment to GitHub issue #2 using this EXACT format:
+               
+               ## 📅 Rails Daily Research Report - ${{ steps.metadata.outputs.date }}
+               
+               ### 🤖 Automation Metadata
+               - **Run ID**: ${{ github.run_id }}
+               - **Run Number**: #${{ github.run_number }}
+               - **Triggered**: ${{ steps.metadata.outputs.trigger }} at ${{ steps.metadata.outputs.start_time }}
+               - **Workflow**: [View Run](${{ steps.metadata.outputs.run_url }})
+               - **Next Scheduled Run**: Tomorrow at 09:00 UTC
                
                ### 🔍 Sources Checked
-               - List all sources you checked
+               - [ ] Rails Blog (https://rubyonrails.org/blog)
+               - [ ] GitHub Releases (https://github.com/rails/rails/releases)
+               - [ ] Rails Edge Guides (https://edgeguides.rubyonrails.org/)
+               - [ ] 37signals Dev Blog (https://dev.37signals.com/)
+               - [ ] Recent commits (https://github.com/rails/rails/commits/main)
+               
+               Mark with [x] for sources you successfully checked.
                
                ### 📰 Findings
+               
+               [ONE OF THE FOLLOWING:]
+               
+               [IF UPDATES FOUND:]
                For each finding:
-               - Title and source link
-               - Impact level (🔴 Critical, 🟡 Important, 🟢 Informational)
-               - Brief summary
-               - Whether documentation updates are needed
+               - **Title**: [Title with link]
+               - **Impact**: 🔴 Critical / 🟡 Important / 🟢 Informational
+               - **Summary**: Brief description
+               - **Action**: Documentation updated / Monitoring / No action needed
                
-               ### 📊 Stats
-               - Any new Rails versions found
-               - Number of significant updates
+               [IF NO UPDATES FOUND:]
+               ✅ **No new Rails updates found today**
                
-               If no relevant news is found, still comment stating: "No new relevant Rails updates found today."
+               All sources checked successfully. No new releases, security updates, or significant changes detected since the last scan.
+               
+               ### 📊 Daily Statistics
+               - Rails versions checked: 8.0.x, 8.1.beta1
+               - New findings: [number]
+               - Documentation updates: [number of files changed or "None"]
+               - Research duration: ~2-3 minutes
+               
+               ### 🔄 Status
+               - Research: ✅ Complete
+               - Documentation: [✅ Updated / ✅ No updates needed]
+               - Next run: Scheduled for tomorrow
+               
+               ---
+               *Automated by [Rails Daily Research Workflow](https://github.com/${{ github.repository }}/blob/main/.github/workflows/rails-daily-research.yml)*
 
             4. If you find significant updates that affect the documentation:
                - Update the relevant .md files in the repository
                - Create new documentation files if needed for major features
                - Update the README.md with any critical information
-               - Ensure all changes are accurate and well-formatted
+               - List the files changed in your comment
 
             5. After making any documentation updates:
                - Stage all changes with git add
-               - Create a descriptive commit message explaining what was updated
-               - The commit will be automatically pushed by the workflow
+               - Create a descriptive commit message
+               - Changes will be automatically pushed by the workflow
 
-            Focus on information that would help Claude Code assist developers with Rails 8 projects.
-            Be thorough but concise in your research and updates.
+            REMEMBER: You MUST post a comment to issue #2 even if no updates are found. This provides accountability that the automation is working correctly.
           claude_args: |
             --max-turns 15
             --model claude-sonnet-4-20250514
@@ -128,12 +168,72 @@ jobs:
         run: |
           git push origin main || echo "Failed to push changes"
 
+      - name: Verify comment posted
+        id: verify_comment
+        run: |
+          # Check if a comment was posted in the last 5 minutes
+          RECENT_COMMENT=$(gh api repos/${{ github.repository }}/issues/2/comments \
+            --jq ".[] | select(.created_at > \"$(date -u -d '5 minutes ago' '+%Y-%m-%dT%H:%M:%SZ')\") | .created_at" \
+            | head -1)
+          
+          if [ -n "$RECENT_COMMENT" ]; then
+            echo "comment_posted=true" >> $GITHUB_OUTPUT
+            echo "✅ Comment posted to issue #2"
+          else
+            echo "comment_posted=false" >> $GITHUB_OUTPUT
+            echo "⚠️ No recent comment found on issue #2"
+          fi
+
+      - name: Fallback comment if needed
+        if: steps.verify_comment.outputs.comment_posted == 'false'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: 2,
+              body: `## 📅 Rails Daily Research Report - ${new Date().toISOString().split('T')[0]}
+              
+              ### 🤖 Automation Metadata
+              - **Run ID**: ${context.runId}
+              - **Run Number**: #${context.runNumber}
+              - **Triggered**: ${{ steps.metadata.outputs.trigger }} at ${{ steps.metadata.outputs.start_time }}
+              - **Workflow**: [View Run](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})
+              
+              ### ⚠️ Automated Report
+              
+              The Rails research automation completed but did not post findings automatically.
+              This could mean:
+              - No new Rails updates were found
+              - Claude encountered an issue posting the comment
+              
+              Please check the [workflow logs](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}) for details.
+              
+              ### 🔄 Status
+              - Research: ✅ Workflow completed
+              - Next run: Scheduled for tomorrow at 09:00 UTC
+              
+              ---
+              *Fallback message from [Rails Daily Research Workflow](https://github.com/${context.repo.owner}/${context.repo.repo}/blob/main/.github/workflows/rails-daily-research.yml)*`
+            })
+
       - name: Summary
         run: |
+          END_TIME=$(date -u +%Y-%m-%dT%H:%M:%SZ)
+          START_TIME="${{ steps.metadata.outputs.start_time }}"
+          
+          # Calculate duration (rough estimate)
+          DURATION_SECONDS=$(($(date -d "$END_TIME" +%s) - $(date -d "$START_TIME" +%s)))
+          DURATION_MINUTES=$((DURATION_SECONDS / 60))
+          DURATION_REMAINING=$((DURATION_SECONDS % 60))
+          
           echo "## 📊 Rails Research Summary" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
-          echo "- **Date**: $(date +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "- **Date**: ${{ steps.metadata.outputs.date }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Duration**: ${DURATION_MINUTES}m ${DURATION_REMAINING}s" >> $GITHUB_STEP_SUMMARY
           echo "- **Status**: ✅ Research completed" >> $GITHUB_STEP_SUMMARY
+          echo "- **Comment Posted**: $([[ "${{ steps.verify_comment.outputs.comment_posted }}" == "true" ]] && echo "✅ Yes" || echo "⚠️ Fallback used")" >> $GITHUB_STEP_SUMMARY
           echo "- **Changes**: $([[ "${{ steps.check_changes.outputs.changes }}" == "true" ]] && echo "📝 Documentation updated" || echo "No updates needed")" >> $GITHUB_STEP_SUMMARY
           echo "" >> $GITHUB_STEP_SUMMARY
           echo "View detailed findings in [Issue #2](https://github.com/${{ github.repository }}/issues/2)" >> $GITHUB_STEP_SUMMARY
