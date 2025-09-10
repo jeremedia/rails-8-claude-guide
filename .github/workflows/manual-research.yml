@@ -1,0 +1,130 @@
+name: Manual Rails Research
+
+on:
+  workflow_dispatch:
+    inputs:
+      research_focus:
+        description: 'Specific Rails topics to research (optional)'
+        required: false
+        type: string
+        default: ''
+      update_docs:
+        description: 'Update documentation with findings'
+        required: false
+        type: boolean
+        default: true
+      sources:
+        description: 'Additional sources to check'
+        required: false
+        type: string
+        default: ''
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  manual-research:
+    runs-on: ubuntu-latest
+    name: Manual Rails Research
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure git
+        run: |
+          git config --global user.name "Claude Research Bot"
+          git config --global user.email "claude-bot@anthropic.com"
+
+      - name: Build research prompt
+        id: build_prompt
+        run: |
+          # Build dynamic prompt based on inputs
+          cat > research_prompt.txt << 'EOF'
+          Perform Rails research with the following parameters:
+          
+          Research Focus: ${{ github.event.inputs.research_focus || 'General Rails 8 updates' }}
+          
+          Additional Sources: ${{ github.event.inputs.sources || 'None specified' }}
+          
+          Standard sources to check:
+          - Rails Blog and GitHub releases
+          - Rails Edge Guides
+          - 37signals Dev Blog
+          
+          Tasks:
+          1. Research the specified topics thoroughly
+          2. Comment findings on GitHub issue #2
+          3. ${{ github.event.inputs.update_docs == 'true' && 'Update relevant documentation files' || 'Report findings only (no documentation updates)' }}
+          
+          Use the standard format for issue #2 comments.
+          EOF
+          
+          echo "Prompt built successfully"
+
+      - name: Run targeted Rails research
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            ${{ steps.build_prompt.outputs.* }}
+            
+            Perform Rails research with these specific parameters:
+            
+            **Research Focus**: ${{ github.event.inputs.research_focus || 'General Rails 8 updates - all topics' }}
+            
+            **Additional Sources to Check**: ${{ github.event.inputs.sources || 'Use standard sources only' }}
+            
+            **Documentation Updates**: ${{ github.event.inputs.update_docs == 'true' && 'Yes - update relevant .md files with findings' || 'No - only post findings to issue #2' }}
+            
+            Standard sources to always check:
+            - Rails Blog (https://rubyonrails.org/blog)
+            - Rails GitHub Releases
+            - Rails Edge Guides
+            - 37signals Dev Blog
+            
+            Follow the standard research process:
+            1. Check all sources thoroughly
+            2. Post detailed findings to GitHub issue #2
+            3. Update documentation if requested
+            
+            Be especially thorough about: ${{ github.event.inputs.research_focus }}
+          claude_args: |
+            --max-turns 15
+            --model claude-sonnet-4-20250514
+            --allowedTools WebSearch,WebFetch,Read,Write,Edit,MultiEdit,Bash
+
+      - name: Commit and push changes
+        if: github.event.inputs.update_docs == 'true'
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git add -A
+            git commit -m "Manual Rails research: ${{ github.event.inputs.research_focus || 'General updates' }}
+
+          Manually triggered Rails research via GitHub Action.
+          Focus: ${{ github.event.inputs.research_focus || 'General Rails 8 updates' }}
+          
+          See issue #2 for detailed findings.
+          
+          🤖 Automated with Claude Code GitHub Action"
+            
+            git push origin main
+            echo "✅ Changes committed and pushed"
+          else
+            echo "No changes to commit"
+          fi
+
+      - name: Summary
+        run: |
+          echo "## 🔍 Manual Rails Research Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Parameters" >> $GITHUB_STEP_SUMMARY
+          echo "- **Focus**: ${{ github.event.inputs.research_focus || 'General Rails 8 updates' }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Update Docs**: ${{ github.event.inputs.update_docs }}" >> $GITHUB_STEP_SUMMARY
+          echo "- **Additional Sources**: ${{ github.event.inputs.sources || 'None' }}" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Results" >> $GITHUB_STEP_SUMMARY
+          echo "View detailed findings in [Issue #2](https://github.com/${{ github.repository }}/issues/2)" >> $GITHUB_STEP_SUMMARY

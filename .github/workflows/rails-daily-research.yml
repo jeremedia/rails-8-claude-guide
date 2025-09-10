@@ -1,0 +1,155 @@
+name: Rails Daily Research
+
+on:
+  schedule:
+    # Run daily at 9:00 AM UTC (adjust for your timezone)
+    - cron: '0 9 * * *'
+  workflow_dispatch:  # Allow manual triggering
+    inputs:
+      debug:
+        description: 'Enable debug mode'
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+  issues: write
+  pull-requests: write
+
+jobs:
+  rails-research:
+    runs-on: ubuntu-latest
+    name: Daily Rails Update Research
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0  # Get full history for proper git operations
+
+      - name: Configure git
+        run: |
+          git config --global user.name "Claude Research Bot"
+          git config --global user.email "claude-bot@anthropic.com"
+
+      - name: Pull latest changes
+        run: |
+          git pull origin main || echo "No remote changes to pull"
+
+      - name: Run Rails Research with Claude
+        uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            You are maintaining the Rails 8 knowledge base repository. Perform the following daily research tasks:
+
+            1. Check these primary sources for Rails news:
+               - Rails Blog (https://rubyonrails.org/blog)
+               - Rails GitHub Releases (https://github.com/rails/rails/releases)
+               - Rails Edge Guides (https://edgeguides.rubyonrails.org/)
+               - 37signals Dev Blog (https://dev.37signals.com/)
+               - Recent Rails commits (https://github.com/rails/rails/commits/main)
+
+            2. Look specifically for:
+               - New Rails 8.x releases, patches, or security updates
+               - Rails 8.1 beta updates and release candidates
+               - Breaking changes or deprecations
+               - New features or significant improvements
+               - Performance optimizations
+               - Production insights from companies using Rails 8
+               - Updates to the Solid trilogy (Queue/Cache/Cable)
+               - Active Storage or Turbo/Stimulus updates
+
+            3. Add a detailed comment to GitHub issue #2 with your findings using this format:
+               ## Rails Update Research - [Today's Date]
+               
+               ### 🔍 Sources Checked
+               - List all sources you checked
+               
+               ### 📰 Findings
+               For each finding:
+               - Title and source link
+               - Impact level (🔴 Critical, 🟡 Important, 🟢 Informational)
+               - Brief summary
+               - Whether documentation updates are needed
+               
+               ### 📊 Stats
+               - Any new Rails versions found
+               - Number of significant updates
+               
+               If no relevant news is found, still comment stating: "No new relevant Rails updates found today."
+
+            4. If you find significant updates that affect the documentation:
+               - Update the relevant .md files in the repository
+               - Create new documentation files if needed for major features
+               - Update the README.md with any critical information
+               - Ensure all changes are accurate and well-formatted
+
+            5. After making any documentation updates:
+               - Stage all changes with git add
+               - Create a descriptive commit message explaining what was updated
+               - The commit will be automatically pushed by the workflow
+
+            Focus on information that would help Claude Code assist developers with Rails 8 projects.
+            Be thorough but concise in your research and updates.
+          claude_args: |
+            --max-turns 15
+            --model claude-sonnet-4-20250514
+            --allowedTools WebSearch,WebFetch,Read,Write,Edit,MultiEdit,Bash
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "changes=true" >> $GITHUB_OUTPUT
+            echo "Changes detected in repository"
+          else
+            echo "changes=false" >> $GITHUB_OUTPUT
+            echo "No changes to commit"
+          fi
+
+      - name: Commit changes
+        if: steps.check_changes.outputs.changes == 'true'
+        run: |
+          git add -A
+          git commit -m "Automated Rails research update - $(date +'%Y-%m-%d')
+
+          Daily Rails research performed by GitHub Action using Claude Code.
+          See issue #2 for detailed findings.
+
+          🤖 Automated with Claude Code GitHub Action" || echo "No changes to commit"
+
+      - name: Push changes
+        if: steps.check_changes.outputs.changes == 'true'
+        run: |
+          git push origin main || echo "Failed to push changes"
+
+      - name: Summary
+        run: |
+          echo "## 📊 Rails Research Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Date**: $(date +'%Y-%m-%d %H:%M:%S UTC')" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status**: ✅ Research completed" >> $GITHUB_STEP_SUMMARY
+          echo "- **Changes**: $([[ "${{ steps.check_changes.outputs.changes }}" == "true" ]] && echo "📝 Documentation updated" || echo "No updates needed")" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "View detailed findings in [Issue #2](https://github.com/${{ github.repository }}/issues/2)" >> $GITHUB_STEP_SUMMARY
+
+      - name: Error notification
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: 2,
+              body: `## ❌ Rails Research Failed - ${new Date().toISOString().split('T')[0]}
+              
+              The automated Rails research encountered an error.
+              
+              [View workflow run](https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId})
+              
+              Please check the logs and run manually if needed.`
+            })

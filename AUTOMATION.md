@@ -1,16 +1,49 @@
 # Rails Research Automation Guide
 
-*Automated daily Rails 8 updates using Claude Code's headless mode*
+*Automated daily Rails 8 updates using Claude Code's headless mode and GitHub Actions*
 
 ## Overview
 
-This automation system uses Claude Code's headless mode to automatically research Rails updates daily, maintaining the knowledge base without manual intervention.
+This automation system provides two methods for automated Rails research:
+1. **GitHub Actions** (Cloud-based, recommended) - Runs on GitHub's infrastructure
+2. **Local automation** (Self-hosted) - Uses Claude Code's headless mode with cron/launchd
+
+Both methods automatically research Rails updates daily, maintaining the knowledge base without manual intervention.
 
 ## Architecture
 
+### Method 1: GitHub Actions (Recommended)
+
 ```
 ┌─────────────────┐
-│   Scheduler     │  (cron/systemd)
+│  GitHub Actions │  (Schedule trigger)
+└────────┬────────┘
+         │ Daily at 9 AM UTC
+         ▼
+┌─────────────────┐
+│  Claude Code    │  GitHub Action
+│  Action@v1      │
+└────────┬────────┘
+         │ Runs with prompt
+         ▼
+┌─────────────────┐
+│  Web Research   │  → Rails Blog
+│  & Analysis     │  → GitHub Releases
+│                 │  → Documentation
+└────────┬────────┘
+         │ Updates
+         ▼
+┌─────────────────┐
+│  GitHub Repo    │  → Issue #2 comments
+│  & Documentation│  → Auto commits & pushes
+└─────────────────┘
+```
+
+### Method 2: Local Automation
+
+```
+┌─────────────────┐
+│   Scheduler     │  (cron/launchd/systemd)
 └────────┬────────┘
          │ Daily trigger
          ▼
@@ -41,7 +74,47 @@ This automation system uses Claude Code's headless mode to automatically researc
 
 ## Quick Setup
 
-### macOS/Linux with Cron
+### Method 1: GitHub Actions (Recommended)
+
+#### Prerequisites
+1. Repository with admin access
+2. Anthropic API key from [console.anthropic.com](https://console.anthropic.com)
+
+#### Setup Steps
+
+```bash
+# 1. Add your Anthropic API key to repository secrets
+# Go to: Settings → Secrets and variables → Actions
+# Add new secret: ANTHROPIC_API_KEY
+
+# 2. Workflows are already in .github/workflows/
+# - rails-daily-research.yml (Daily automation)
+# - claude-mentions.yml (Respond to @claude)
+# - manual-research.yml (Manual trigger)
+
+# 3. No additional setup needed!
+# The workflows will automatically:
+# - Run daily at 9 AM UTC
+# - Respond to @claude mentions
+# - Allow manual triggering
+```
+
+#### Testing GitHub Actions
+
+```bash
+# Manually trigger the research workflow
+# Go to: Actions → Rails Daily Research → Run workflow
+
+# Or use GitHub CLI
+gh workflow run rails-daily-research.yml
+
+# Check workflow status
+gh run list --workflow=rails-daily-research.yml
+```
+
+### Method 2: Local Automation
+
+#### macOS/Linux with Cron
 
 ```bash
 # 1. Make scripts executable
@@ -55,7 +128,7 @@ chmod +x scripts/setup_cron.sh
 crontab -l | grep rails_daily_research
 ```
 
-### Linux with systemd
+#### Linux with systemd
 
 ```bash
 # 1. Copy service files
@@ -78,9 +151,37 @@ sudo systemctl list-timers | grep rails
 
 ## Configuration
 
-### Environment Variables
+### GitHub Actions Configuration
 
-Create `.rails_research_env` in the scripts directory:
+#### Repository Secrets
+
+Add these secrets in Settings → Secrets and variables → Actions:
+
+| Secret Name | Description | Required |
+|------------|-------------|----------|
+| `ANTHROPIC_API_KEY` | Your Anthropic API key | Yes |
+| `NOTIFICATION_EMAIL` | Email for notifications | No |
+| `SLACK_WEBHOOK_URL` | Slack webhook for alerts | No |
+
+#### Workflow Customization
+
+Edit `.github/workflows/rails-daily-research.yml`:
+
+```yaml
+# Change schedule (default: 9 AM UTC)
+on:
+  schedule:
+    - cron: '0 14 * * *'  # 2 PM UTC
+
+# Change model or max turns
+claude_args: |
+  --max-turns 20
+  --model claude-opus-4-1-20250805
+```
+
+### Local Environment Variables
+
+For local automation, create `.rails_research_env` in the scripts directory:
 
 ```bash
 # Required
