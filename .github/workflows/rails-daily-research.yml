@@ -16,6 +16,7 @@ permissions:
   contents: write
   issues: write
   pull-requests: write
+  id-token: write  # Required for OIDC token
 
 jobs:
   rails-research:
@@ -42,6 +43,7 @@ jobs:
         uses: anthropics/claude-code-action@v1
         with:
           anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           prompt: |
             You are maintaining the Rails 8 knowledge base repository. Perform the following daily research tasks:
 
