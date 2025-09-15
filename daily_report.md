@@ -1,10 +1,10 @@
-## 📅 Rails Daily Research Report - 2025-09-14
+## 📅 Rails Daily Research Report - 2025-09-15
 
 ### 🤖 Automation Metadata
-- **Run ID**: 17709024523
-- **Run Number**: #11
-- **Triggered**: schedule at 2025-09-14T09:02:31Z
-- **Workflow**: [View Run](https://github.com/jeremedia/rails-8-claude-guide/actions/runs/17709024523)
+- **Run ID**: 17727741232
+- **Run Number**: #12
+- **Triggered**: schedule at 2025-09-15T09:02:42Z
+- **Workflow**: [View Run](https://github.com/jeremedia/rails-8-claude-guide/actions/runs/17727741232)
 - **Status**: ✅ Automated research completed
 - **Next Scheduled Run**: Tomorrow at 09:00 UTC
 
@@ -17,31 +17,38 @@
 
 ### 📰 Findings
 
-✅ **No new Rails updates found today**
+**Recent Notable Updates:**
 
-All sources checked successfully. No new releases, security updates, or significant changes detected since the last scan on September 13, 2025.
+- **Title**: [Rails 8.1 Beta 1 Released](https://rubyonrails.org/blog) (September 4, 2025)
+- **Impact**: 🟡 Important
+- **Summary**: Major beta release with 500+ contributors across 2500 commits. Introduces job continuations and structured events via `Rails.event`. New testing helpers including `assert_events_reported`.
+- **Action**: Monitoring for stable release
 
-**Notable existing updates confirmed still current:**
-- **Rails 8.1.0.beta1** (released September 4, 2025) - Latest beta with job continuations, structured events, and local CI improvements
-- Recent commits show ongoing refinements to Action Text, Active Job performance, and rate limiting features
-- 37signals shared "Lexxy: A new rich text editor for Rails" on September 4, 2025
+- **Title**: Recent Security Patches (August 13, 2025)
+- **Impact**: 🟡 Important  
+- **Summary**: Security releases for Rails 7.1.5.2, 7.2.2.2, and 8.0.2.1 addressing Active Storage transformation vulnerabilities.
+- **Action**: No action needed (already documented)
 
-**Recent commit activity includes:**
-- Action Text improvements for broader WYSIWYG editor support
-- Active Job ObjectSerializer performance optimizations  
-- Rate limiting enhancements with method name support
-- Development tooling improvements for structured debug events
+- **Title**: [Action Text WYSIWYG Editor Improvements](https://github.com/rails/rails/commits/main)
+- **Impact**: 🟢 Informational
+- **Summary**: Recent commits generalized `:rich_text_area` Capybara selector to prepare for more Action Text-capable WYSIWYG editors.
+- **Action**: Monitoring for release
+
+- **Title**: [Turbo 8 with Page Morphing](https://dev.37signals.com/) (February 2024)
+- **Impact**: 🟢 Informational
+- **Summary**: Turbo 8 introduces morphing for smooth page refreshes, view transitions, and InstantClick features.
+- **Action**: No action needed (already documented)
 
 ### 📊 Daily Statistics
 - Rails versions checked: 8.0.x, 8.1.beta1
-- New findings: 0
+- New findings: 4
 - Documentation updates: None
-- Research duration: ~2-3 minutes
+- Research duration: ~3 minutes
 
 ### 🔄 Repository Status
 - Research: ✅ Complete
 - Documentation: ✅ No updates needed
-- Report: Generated at 2025-09-14T09:02:31Z
+- Report: Generated at 2025-09-15T09:02:42Z
 
 ---
 *Automated by [Rails Daily Research Workflow](https://github.com/jeremedia/rails-8-claude-guide/blob/main/.github/workflows/rails-daily-research.yml)*
