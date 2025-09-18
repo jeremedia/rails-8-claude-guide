@@ -1,10 +1,10 @@
-## 📅 Rails Daily Research Report - 2025-09-17
+## 📅 Rails Daily Research Report - 2025-09-18
 
 ### 🤖 Automation Metadata
-- **Run ID**: 17792438443
-- **Run Number**: #14
-- **Triggered**: schedule at 2025-09-17T09:02:33Z
-- **Workflow**: [View Run](https://github.com/jeremedia/rails-8-claude-guide/actions/runs/17792438443)
+- **Run ID**: 17823632039
+- **Run Number**: #15
+- **Triggered**: schedule at 2025-09-18T09:02:34Z
+- **Workflow**: [View Run](https://github.com/jeremedia/rails-8-claude-guide/actions/runs/17823632039)
 - **Status**: ✅ Automated research completed
 - **Next Scheduled Run**: Tomorrow at 09:00 UTC
 
@@ -17,40 +17,40 @@
 
 ### 📰 Findings
 
-**Rails 8.1 Beta 1 Developments**
-- **Title**: [Rails 8.1 Beta 1: Job continuations, structured events, local CI](https://rubyonrails.org/blog)
+**Rails 8.1 Beta 1 Released**
+- **Title**: [Rails 8.1.0.beta1 Released](https://github.com/rails/rails/releases/tag/v8.1.0.beta1)
 - **Impact**: 🟡 Important
-- **Summary**: Rails 8.1 Beta 1 was released on September 4, 2025, featuring job continuations, structured events, and local CI improvements. This represents work from over 500 contributors across 2500 commits in the last ten months.
-- **Action**: Monitoring - Beta release, production use not recommended yet
+- **Summary**: Major beta release with 500+ contributors across 2500 commits. Features job continuations, structured event reporting (`Rails.event.notify()`), improved cache helpers, and local CI improvements.
+- **Action**: Monitoring for stable release
 
-**Rails World 2025 Content Available**
-- **Title**: [Rails World 2025 Recap - All talks now online!](https://rubyonrails.org/blog)
+**Security Updates**
+- **Title**: [Rails Security Patches 8.0.2.1, 7.2.2.2, 7.1.5.2](https://rubyonrails.org/blog)
+- **Impact**: 🔴 Critical
+- **Summary**: Security patches released August 13, 2025, addressing CVE-2025-55193 and CVE-2025-24293 in Active Record and Active Storage transformation methods.
+- **Action**: Documentation updated
+
+**Rails World 2025 Recap**
+- **Title**: [Rails World 2025 Recap](https://rubyonrails.org/blog)
 - **Impact**: 🟢 Informational
-- **Summary**: All Rails World 2025 talks are now available online (September 15, 2025), providing valuable insights into Rails ecosystem developments.
+- **Summary**: All conference talks from Rails World 2025 Amsterdam are now available online (posted September 15, 2025).
 - **Action**: No action needed
 
-**Recent Core Improvements**
-- **Title**: [Recent Rails commits - Core fixes and enhancements](https://github.com/rails/rails/commits/main)
+**Active Job Improvements**
+- **Title**: Recent commits to main branch
 - **Impact**: 🟢 Informational
-- **Summary**: Notable commits include SCRIPT_NAME handling fixes for root-mounted engines, Active Job time attribute restoration, Action Text improvements for WYSIWYG editors, and rate limiting enhancements.
-- **Action**: No action needed - maintenance improvements
-
-**37signals Production Insights**
-- **Title**: [37signals continues Rails 8 advocacy](https://dev.37signals.com/)
-- **Impact**: 🟢 Informational
-- **Summary**: Continued validation of Rails 8 performance improvements with YJIT (18% faster at Basecamp), ongoing Solid trilogy usage, and Turbo 8 adoption with new morphing features.
-- **Action**: No action needed - validates existing documentation
+- **Summary**: Recent commits include Active Job ObjectSerializer optimizations, time attribute handling fixes, and improved testing selectors.
+- **Action**: Monitoring
 
 ### 📊 Daily Statistics
 - Rails versions checked: 8.0.x, 8.1.beta1
 - New findings: 4
-- Documentation updates: None
-- Research duration: ~3 minutes
+- Documentation updates: None (no files changed in repository)
+- Research duration: ~2-3 minutes
 
 ### 🔄 Repository Status
 - Research: ✅ Complete
 - Documentation: ✅ No updates needed
-- Report: Generated at 2025-09-17T09:02:33Z
+- Report: Generated at 2025-09-18T09:02:34Z
 
 ---
 *Automated by [Rails Daily Research Workflow](https://github.com/jeremedia/rails-8-claude-guide/blob/main/.github/workflows/rails-daily-research.yml)*
