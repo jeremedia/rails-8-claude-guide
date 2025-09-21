@@ -1,10 +1,10 @@
-## 📅 Rails Daily Research Report - 2025-09-20
+## 📅 Rails Daily Research Report - 2025-09-21
 
 ### 🤖 Automation Metadata
-- **Run ID**: 17877931158
-- **Run Number**: #17
-- **Triggered**: schedule at 2025-09-20T09:02:27Z
-- **Workflow**: [View Run](https://github.com/jeremedia/rails-8-claude-guide/actions/runs/17877931158)
+- **Run ID**: 17891584062
+- **Run Number**: #18
+- **Triggered**: schedule at 2025-09-21T09:02:27Z
+- **Workflow**: [View Run](https://github.com/jeremedia/rails-8-claude-guide/actions/runs/17891584062)
 - **Status**: ✅ Automated research completed
 - **Next Scheduled Run**: Tomorrow at 09:00 UTC
 
@@ -17,31 +17,29 @@
 
 ### 📰 Findings
 
-**Title**: [Recent Rails commits - Active Storage and PostgreSQL improvements](https://github.com/rails/rails/commits/main)
-**Impact**: 🟢 Informational
-**Summary**: Recent commits include Active Storage improvements with `image_processing` gem addition, PostgreSQL adapter enhancements for pgbouncer support, new `only_columns` feature for Active Record, and various bug fixes for development environment.
-**Action**: Monitoring
+**Recent Rails Development Activity**
 
-**Title**: [Rails 8.1.0.beta1 - Previously released](https://github.com/rails/rails/releases/tag/v8.1.0.beta1)
-**Impact**: 🟡 Important
-**Summary**: Rails 8.1 Beta 1 was released on September 4, 2025, featuring new Event Reporter (`Rails.event`), structured event tracking, and improvements across Active Support, testing, and caching.
-**Action**: No action needed
+- **Title**: [Recent Rails commits](https://github.com/rails/rails/commits/main)
+- **Impact**: 🟢 Informational
+- **Summary**: Several maintenance commits found on September 20-21, including database connection pool improvements, Active Storage error handling enhancements, and a new `only_columns` method for Active Record
+- **Action**: Monitoring - routine development activity
 
-**Title**: [Security Updates - August 2025](https://github.com/rails/rails/releases)
-**Impact**: 🟡 Important
-**Summary**: Rails versions 7.1.5.2, 7.2.2.2, and 8.0.2.1 were released on August 13, 2025, addressing CVE-2025-55193 and CVE-2025-24293 security advisories.
-**Action**: No action needed
+**Key Recent Commits:**
+1. **Database Connection Fix** (Sep 21) - Fixed lease_connection to preserve pool state when checkout callbacks fail
+2. **Active Storage Enhancement** (Sep 20) - Improved error handling when libvips/ruby-vips gems are missing
+3. **Active Record Addition** (Sep 19) - Added `only_columns` method for selective column handling
+4. **PostgreSQL Adapter** (Sep 19) - Enhanced connection management for pgbouncer compatibility
 
 ### 📊 Daily Statistics
 - Rails versions checked: 8.0.x, 8.1.beta1
-- New findings: 3
+- New findings: 4 recent commits
 - Documentation updates: None
-- Research duration: ~2-3 minutes
+- research duration: ~2-3 minutes
 
 ### 🔄 Repository Status
 - Research: ✅ Complete
 - Documentation: ✅ No updates needed
-- Report: Generated at 2025-09-20T09:02:27Z
+- Report: Generated at 2025-09-21T09:02:27Z
 
 ---
 *Automated by [Rails Daily Research Workflow](https://github.com/jeremedia/rails-8-claude-guide/blob/main/.github/workflows/rails-daily-research.yml)*
