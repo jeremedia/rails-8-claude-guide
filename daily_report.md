@@ -1,10 +1,10 @@
-## 📅 Rails Daily Research Report - 2025-09-21
+## 📅 Rails Daily Research Report - 2025-09-22
 
 ### 🤖 Automation Metadata
-- **Run ID**: 17891584062
-- **Run Number**: #18
-- **Triggered**: schedule at 2025-09-21T09:02:27Z
-- **Workflow**: [View Run](https://github.com/jeremedia/rails-8-claude-guide/actions/runs/17891584062)
+- **Run ID**: 17910197315
+- **Run Number**: #19
+- **Triggered**: schedule at 2025-09-22T09:02:56Z
+- **Workflow**: [View Run](https://github.com/jeremedia/rails-8-claude-guide/actions/runs/17910197315)
 - **Status**: ✅ Automated research completed
 - **Next Scheduled Run**: Tomorrow at 09:00 UTC
 
@@ -17,29 +17,36 @@
 
 ### 📰 Findings
 
-**Recent Rails Development Activity**
+- **Title**: [Rails 8.1 Beta 1 Released](https://rubyonrails.org/blog)
+- **Impact**: 🟡 Important
+- **Summary**: Rails 8.1.0.beta1 was released on September 4, 2025, featuring work from over 500 contributors across 2500 commits. Key new features include job continuations, structured events via `Rails.event`, new ActiveSupport::Cache methods, and local CI improvements.
+- **Action**: Monitoring for stable release
 
-- **Title**: [Recent Rails commits](https://github.com/rails/rails/commits/main)
+- **Title**: [Rails World 2025 Conference Recap](https://rubyonrails.org/blog)
 - **Impact**: 🟢 Informational
-- **Summary**: Several maintenance commits found on September 20-21, including database connection pool improvements, Active Storage error handling enhancements, and a new `only_columns` method for Active Record
-- **Action**: Monitoring - routine development activity
+- **Summary**: Rails World 2025 took place in Amsterdam with conference talks now available online. Community engagement and knowledge sharing.
+- **Action**: No action needed
 
-**Key Recent Commits:**
-1. **Database Connection Fix** (Sep 21) - Fixed lease_connection to preserve pool state when checkout callbacks fail
-2. **Active Storage Enhancement** (Sep 20) - Improved error handling when libvips/ruby-vips gems are missing
-3. **Active Record Addition** (Sep 19) - Added `only_columns` method for selective column handling
-4. **PostgreSQL Adapter** (Sep 19) - Enhanced connection management for pgbouncer compatibility
+- **Title**: [Solid Queue 1.0 Released](https://dev.37signals.com/)
+- **Impact**: 🟡 Important
+- **Summary**: Solid Queue reached version 1.0 on September 26, 2024, marking maturity for the Redis replacement in the Solid trilogy.
+- **Action**: No action needed
+
+- **Title**: [Recent Rails Commits - Active Storage Improvements](https://github.com/rails/rails/commits/main)
+- **Impact**: 🟢 Informational
+- **Summary**: Recent commits include adding image_processing gem to default Gemfile, improved libvips compatibility, database connection improvements, and Ruby 3.4.6 support in devcontainer.
+- **Action**: Monitoring
 
 ### 📊 Daily Statistics
 - Rails versions checked: 8.0.x, 8.1.beta1
-- New findings: 4 recent commits
+- New findings: 4
 - Documentation updates: None
-- research duration: ~2-3 minutes
+- Research duration: ~2-3 minutes
 
 ### 🔄 Repository Status
 - Research: ✅ Complete
 - Documentation: ✅ No updates needed
-- Report: Generated at 2025-09-21T09:02:27Z
+- Report: Generated at 2025-09-22T09:02:56Z
 
 ---
 *Automated by [Rails Daily Research Workflow](https://github.com/jeremedia/rails-8-claude-guide/blob/main/.github/workflows/rails-daily-research.yml)*
