@@ -46,7 +46,7 @@ ruby -v --yjit
 # Gemfile
 
 # Core Rails gems
-gem "rails", "~> 8.0.0"
+gem "rails", "~> 8.0.3"
 
 # Remove if migrating to Solid trilogy
 # gem "redis"
