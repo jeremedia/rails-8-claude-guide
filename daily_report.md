@@ -1,10 +1,10 @@
-## 📅 Rails Daily Research Report - 2025-09-27
+## 📅 Rails Daily Research Report - 2025-09-28
 
 ### 🤖 Automation Metadata
-- **Run ID**: 18057769080
-- **Run Number**: #24
-- **Triggered**: schedule at 2025-09-27T09:02:29Z
-- **Workflow**: [View Run](https://github.com/jeremedia/rails-8-claude-guide/actions/runs/18057769080)
+- **Run ID**: 18072075126
+- **Run Number**: #25
+- **Triggered**: schedule at 2025-09-28T09:02:27Z
+- **Workflow**: [View Run](https://github.com/jeremedia/rails-8-claude-guide/actions/runs/18072075126)
 - **Status**: ✅ Automated research completed
 - **Next Scheduled Run**: Tomorrow at 09:00 UTC
 
@@ -17,36 +17,26 @@
 
 ### 📰 Findings
 
-**Recent Rails Main Branch Commits - PostgreSQL 18 Support**
-- **Impact**: 🟡 Important
-- **Summary**: Added support for virtual generated columns in PostgreSQL 18+, allowing `t.virtual ... stored: false` with backwards compatibility
-- **Action**: Monitoring - potential documentation update needed when Rails 8.1 releases
+✅ **No new Rails updates found today**
 
-**Performance Improvements in ActiveRecord**
-- **Impact**: 🟢 Informational
-- **Summary**: Micro-optimizations to connection handling and runtime registries, reduced database connection overhead
-- **Action**: No action needed
+All sources checked successfully. No new releases, security updates, or significant changes detected since the last scan.
 
-**Open Redirect Logging Enhancement**
+**Minor commits found from September 27-28:**
+- **Title**: [Bug fixes for deprecation messages and styling issues](https://github.com/rails/rails/commits/main)
 - **Impact**: 🟢 Informational
-- **Summary**: Added capability to log and notify about potential open redirects for improved security monitoring
-- **Action**: No action needed
-
-**Database Testing Improvements**
-- **Impact**: 🟢 Informational
-- **Summary**: Added replica support for test database parallelization, improving parallel integration test handling
+- **Summary**: Minor bug fixes including deprecation message fixes, code block styling improvements, and PostgreSQL client updates
 - **Action**: No action needed
 
 ### 📊 Daily Statistics
 - Rails versions checked: 8.0.x, 8.1.beta1
-- New findings: 4 commits with incremental improvements
+- New findings: 0 major updates
 - Documentation updates: None
 - Research duration: ~2-3 minutes
 
 ### 🔄 Repository Status
 - Research: ✅ Complete
 - Documentation: ✅ No updates needed
-- Report: Generated at 2025-09-27T09:02:29Z
+- Report: Generated at 2025-09-28T09:02:27Z
 
 ---
 *Automated by [Rails Daily Research Workflow](https://github.com/jeremedia/rails-8-claude-guide/blob/main/.github/workflows/rails-daily-research.yml)*
