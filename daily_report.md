@@ -1,10 +1,10 @@
-## 📅 Rails Daily Research Report - 2025-10-01
+## 📅 Rails Daily Research Report - 2025-10-02
 
 ### 🤖 Automation Metadata
-- **Run ID**: 18157070051
-- **Run Number**: #28
-- **Triggered**: schedule at 2025-10-01T09:02:39Z
-- **Workflow**: [View Run](https://github.com/jeremedia/rails-8-claude-guide/actions/runs/18157070051)
+- **Run ID**: 18188438642
+- **Run Number**: #29
+- **Triggered**: schedule at 2025-10-02T09:02:27Z
+- **Workflow**: [View Run](https://github.com/jeremedia/rails-8-claude-guide/actions/runs/18188438642)
 - **Status**: ✅ Automated research completed
 - **Next Scheduled Run**: Tomorrow at 09:00 UTC
 
@@ -19,13 +19,14 @@
 
 ✅ **No new Rails updates found today**
 
-All sources checked successfully. Rails 8.0.3 (released September 22) and Rails 8.1 Beta 1 (released September 4) remain the latest versions. Recent commits show ongoing development with PostgreSQL 18+ virtual generated columns support, database parallelization improvements, and minor bug fixes, but no new releases or critical announcements detected since the last scan.
+All sources checked successfully. Rails 8.0.3 (released September 22) and Rails 8.1 Beta 1 (released September 4) remain the latest versions. Recent commits continue to show active development with PostgreSQL 18+ virtual generated columns support, bug fixes for `Enumerable#sole` and `class_attribute`, and ongoing testing infrastructure improvements.
 
 **Development Activity Noted:**
-- PostgreSQL 18+ support with virtual generated columns
-- Database replica support improvements for parallel testing
-- Continued refinement of Active Record and testing infrastructure
-- 37signals maintaining focus on "vanilla Rails stack" philosophy
+- PostgreSQL 18+ support for virtual generated columns (continuing from yesterday)
+- Bug fixes for `Enumerable#sole` when handling tuple elements
+- Resolved `class_attribute` issues on instance singleton classes
+- Test database parallelization setup improvements
+- Microsoft Edge and Windows testing configuration updates
 
 ### 📊 Daily Statistics
 - Rails versions checked: 8.0.x, 8.1.beta1
@@ -36,7 +37,7 @@ All sources checked successfully. Rails 8.0.3 (released September 22) and Rails 
 ### 🔄 Repository Status
 - Research: ✅ Complete
 - Documentation: ✅ No updates needed
-- Report: Generated at 2025-10-01T09:02:39Z
+- Report: Generated at 2025-10-02T09:02:27Z
 
 ---
 *Automated by [Rails Daily Research Workflow](https://github.com/jeremedia/rails-8-claude-guide/blob/main/.github/workflows/rails-daily-research.yml)*
