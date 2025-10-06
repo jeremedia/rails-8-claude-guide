@@ -1,10 +1,10 @@
-## 📅 Rails Daily Research Report - 2025-10-05
+## 📅 Rails Daily Research Report - 2025-10-06
 
 ### 🤖 Automation Metadata
-- **Run ID**: 18256609716
-- **Run Number**: #32
-- **Triggered**: schedule at 2025-10-05T09:02:16Z
-- **Workflow**: [View Run](https://github.com/jeremedia/rails-8-claude-guide/actions/runs/18256609716)
+- **Run ID**: 18275628926
+- **Run Number**: #33
+- **Triggered**: schedule at 2025-10-06T09:02:42Z
+- **Workflow**: [View Run](https://github.com/jeremedia/rails-8-claude-guide/actions/runs/18275628926)
 - **Status**: ✅ Automated research completed
 - **Next Scheduled Run**: Tomorrow at 09:00 UTC
 
@@ -17,30 +17,32 @@
 
 ### 📰 Findings
 
-✅ **No new Rails updates found today**
+**Recent Development Activity Found**
 
-All sources checked successfully. No new releases, security updates, or significant changes detected since the last scan.
+- **Title**: [Reset Password Token Duration Configuration](https://github.com/rails/rails/commits/main)
+- **Impact**: 🟢 Informational
+- **Summary**: New configurable reset token expiry in `has_secure_password` for more flexible authentication token management
+- **Action**: Monitoring - minor enhancement for authentication
 
-**Notable Recent Activity (since October 1):**
-- Recent commits focus on documentation improvements and testing compatibility
-- PostgreSQL 18+ virtual columns support added
-- Microsoft Edge version bumped in testing
-- Bug fixes for `Enumerable#sole` and `class_attribute` behavior
+- **Title**: [BigDecimal Precision Improvement](https://github.com/rails/rails/commits/main)
+- **Impact**: 🟢 Informational
+- **Summary**: Ensures default precision is passed when parsing Float values in XmlMini to address potential precision issues
+- **Action**: No action needed - internal data type conversion improvement
 
-**Recent Releases Still Current:**
-- Rails 8.0.3 (September 22, 2025) - Latest stable release
-- Rails 8.1.0.beta1 (September 4, 2025) - Beta with new features
+**Previous Releases Still Current**
+- Rails 8.0.3 (latest stable) - September 22, 2025
+- Rails 8.1 Beta 1 (latest beta) - September 4, 2025
 
 ### 📊 Daily Statistics
 - Rails versions checked: 8.0.x, 8.1.beta1
-- New findings: 0 critical updates
+- New findings: 2 development commits
 - Documentation updates: None
-- Research duration: ~2-3 minutes
+- Research duration: ~3 minutes
 
 ### 🔄 Repository Status
 - Research: ✅ Complete
 - Documentation: ✅ No updates needed
-- Report: Generated at 2025-10-05T09:02:16Z
+- Report: Generated at 2025-10-06T09:02:42Z
 
 ---
 *Automated by [Rails Daily Research Workflow](https://github.com/jeremedia/rails-8-claude-guide/blob/main/.github/workflows/rails-daily-research.yml)*
