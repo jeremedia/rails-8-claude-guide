@@ -1,10 +1,10 @@
-## 📅 Rails Daily Research Report - 2025-10-06
+## 📅 Rails Daily Research Report - 2025-10-07
 
 ### 🤖 Automation Metadata
-- **Run ID**: 18275628926
-- **Run Number**: #33
-- **Triggered**: schedule at 2025-10-06T09:02:42Z
-- **Workflow**: [View Run](https://github.com/jeremedia/rails-8-claude-guide/actions/runs/18275628926)
+- **Run ID**: 18307569809
+- **Run Number**: #34
+- **Triggered**: schedule at 2025-10-07T09:02:39Z
+- **Workflow**: [View Run](https://github.com/jeremedia/rails-8-claude-guide/actions/runs/18307569809)
 - **Status**: ✅ Automated research completed
 - **Next Scheduled Run**: Tomorrow at 09:00 UTC
 
@@ -17,32 +17,40 @@
 
 ### 📰 Findings
 
-**Recent Development Activity Found**
+**Rails 8.1 Beta 1 Available**
+- **Title**: [Rails 8.1.0.beta1 Released](https://github.com/rails/rails/releases/tag/v8.1.0.beta1)
+- **Impact**: 🟡 Important
+- **Summary**: Released September 4th with job continuations, structured events via `Rails.event`, new testing helpers like `assert_events_reported`, and improvements to caching/error reporting
+- **Action**: Monitoring for stable release
 
-- **Title**: [Reset Password Token Duration Configuration](https://github.com/rails/rails/commits/main)
+**Rails 8.0.3 Maintenance Release**
+- **Title**: [Rails 8.0.3 Released](https://github.com/rails/rails/releases/tag/v8.0.3)
 - **Impact**: 🟢 Informational
-- **Summary**: New configurable reset token expiry in `has_secure_password` for more flexible authentication token management
-- **Action**: Monitoring - minor enhancement for authentication
+- **Summary**: Released September 22nd with fixes across Active Support, Active Record, Action View, and other components
+- **Action**: No action needed
 
-- **Title**: [BigDecimal Precision Improvement](https://github.com/rails/rails/commits/main)
+**37signals Production Insights**
+- **Title**: [Turbo 8 Morphing & Performance Updates](https://dev.37signals.com/)
+- **Impact**: 🟡 Important
+- **Summary**: Turbo 8 morphing for smooth page refreshes, Solid Queue 1.0 released, 18% performance improvement with YJIT at Basecamp
+- **Action**: Monitoring for documentation updates
+
+**Recent Development Activity**
+- **Title**: [JSON Serialization & Testing Improvements](https://github.com/rails/rails/commits/main)
 - **Impact**: 🟢 Informational
-- **Summary**: Ensures default precision is passed when parsing Float values in XmlMini to address potential precision issues
-- **Action**: No action needed - internal data type conversion improvement
-
-**Previous Releases Still Current**
-- Rails 8.0.3 (latest stable) - September 22, 2025
-- Rails 8.1 Beta 1 (latest beta) - September 4, 2025
+- **Summary**: Recent commits show JSON dependency additions, JavaScript separator handling changes, parallel testing fixes, and SSE performance improvements
+- **Action**: Monitoring ongoing development
 
 ### 📊 Daily Statistics
 - Rails versions checked: 8.0.x, 8.1.beta1
-- New findings: 2 development commits
+- New findings: 4
 - Documentation updates: None
 - Research duration: ~3 minutes
 
 ### 🔄 Repository Status
 - Research: ✅ Complete
 - Documentation: ✅ No updates needed
-- Report: Generated at 2025-10-06T09:02:42Z
+- Report: Generated at 2025-10-07T09:02:39Z
 
 ---
 *Automated by [Rails Daily Research Workflow](https://github.com/jeremedia/rails-8-claude-guide/blob/main/.github/workflows/rails-daily-research.yml)*
